@@ -32,7 +32,7 @@ async def main():
         for ndx, row in cities.iterrows():
             loc = f"\n{row['City']}, {row['State']}"
             sys.stdout.write(loc)
-            params['prox'] = f"{row['Lat']},{row['Lng']},10000"
+            params['prox'] = f"{row['Lat']},{row['Lng']},100000"
             async with session.get(url, params=params) as resp:
                 data = await resp.json()
                 if 'TRAFFIC_ITEMS' in data:
