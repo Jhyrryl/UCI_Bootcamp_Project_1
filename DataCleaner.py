@@ -47,3 +47,5 @@ summarydf=pd.DataFrame.from_dict({"ID":IDlist,
                                   "End_time": endtimes,
                                   "Vehicle_response":vehiclecalled ,
                                   "Road_closure":roadclosed})
+    
+summarydf.to_json("Resources/CleanedData.json")
