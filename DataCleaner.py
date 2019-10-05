@@ -7,8 +7,7 @@ Created on Mon Sep 30 19:05:55 2019
 
 import json
 import pandas as pd
-import time
-
+from datetime import datetime, timedelta
 # read file
 with open('Resources/accidents.json', 'r') as myfile:
     data=myfile.read()
@@ -27,6 +26,13 @@ vehiclecalled=[]
 roadclosed=[]
 
 
+#date conversion
+starttimeconv=[]
+endtimeconv=[]
+duration=[]
+durationtoseconds=[]
+
+
 for i in range(0, len(obj),1):
     IDlist.append(obj[i]["TRAFFIC_ITEM_ID"])
     originalid.append(obj[i]["ORIGINAL_TRAFFIC_ITEM_ID"])
@@ -37,13 +43,23 @@ for i in range(0, len(obj),1):
     endtimes.append(obj[i]['END_TIME'])
     vehiclecalled.append(obj[i]['TRAFFIC_ITEM_DETAIL']['INCIDENT']['RESPONSE_VEHICLES'])
     roadclosed.append(obj[i]['TRAFFIC_ITEM_DETAIL']['ROAD_CLOSED'])
-
-
+    
+    #datetime conversions
+    starttimeconv.append(datetime.strptime(starttimes[i], '%m/%d/%Y %X'))
+    endtimeconv.append(datetime.strptime(endtimes[i], '%m/%d/%Y %X'))
+    duration.append(endtimeconv[i]-starttimeconv[i])
+    durationtoseconds.append(duration[i].total_seconds())
+    
+    
+x=timedelta(seconds=1)
 summarydf=pd.DataFrame.from_dict({"ID":IDlist,
                                   "Criticality":criticality,
                                   "Latitude":lat,
                                   "Longitude":lng,
                                   "Start_time":starttimes,
                                   "End_time": endtimes,
+                                  "Duration_(seconds)":durationtoseconds,
                                   "Vehicle_response":vehiclecalled ,
                                   "Road_closure":roadclosed})
+    
+summarydf.to_json("Resources/CleanedData.json")
