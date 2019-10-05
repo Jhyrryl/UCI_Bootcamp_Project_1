@@ -45,13 +45,12 @@ for i in range(0, len(obj),1):
     roadclosed.append(obj[i]['TRAFFIC_ITEM_DETAIL']['ROAD_CLOSED'])
     
     #datetime conversions
-    starttimeconv.append(datetime.strptime(starttimes[i], '%m/%d/%Y %X'))
-    endtimeconv.append(datetime.strptime(endtimes[i], '%m/%d/%Y %X'))
+    starttimeconv.append(datetime.strptime(starttimes[i], '%Y/%m/%d %X'))
+    endtimeconv.append(datetime.strptime(endtimes[i], '%Y/%m/%d %X'))
     duration.append(endtimeconv[i]-starttimeconv[i])
     durationtoseconds.append(duration[i].total_seconds())
     
     
-x=timedelta(seconds=1)
 summarydf=pd.DataFrame.from_dict({"ID":IDlist,
                                   "Criticality":criticality,
                                   "Latitude":lat,
