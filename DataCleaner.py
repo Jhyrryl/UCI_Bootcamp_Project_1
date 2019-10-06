@@ -65,32 +65,32 @@ summarydf=pd.DataFrame.from_dict({"ID":IDlist,
                                   "Duration_(seconds)":durationtoseconds,
                                   "Vehicle_response":vehiclecalled ,
                                   "Road_closure":roadclosed})
-states = []
-
-url = "https://maps.googleapis.com/maps/api/geocode/json"
-params = {'key': gkey}
-
-for ndx, row in summarydf.iterrows():
-    # print(row)
-    lat_lng = f"{row['Latitude']},{row['Longitude']}"
-    params['latlng'] = lat_lng
-    response = requests.get(url,params).json()
-    state = None
-    for component in response['results'][0]['address_components']:
-        # print(component)
-        for t in component['types']:
-            if t == "administrative_area_level_1":
-                state = component['long_name']
-                break
-        if state != None:
-            break
-
-    states.append(state)
-    sys.stdout.write(f"{ndx} - {state}\n")
-    sys.stdout.flush()
-    time.sleep(0.02)
-
-summarydf['State'] = states
+# states = []
+# 
+# url = "https://maps.googleapis.com/maps/api/geocode/json"
+# params = {'key': gkey}
+# 
+# for ndx, row in summarydf.iterrows():
+#     # print(row)
+#     lat_lng = f"{row['Latitude']},{row['Longitude']}"
+#     params['latlng'] = lat_lng
+#     response = requests.get(url,params).json()
+#     state = None
+#     for component in response['results'][0]['address_components']:
+#         # print(component)
+#         for t in component['types']:
+#             if t == "administrative_area_level_1":
+#                 state = component['long_name']
+#                 break
+#         if state != None:
+#             break
+# 
+#     states.append(state)
+#     sys.stdout.write(f"{ndx} - {state}\n")
+#     sys.stdout.flush()
+#     time.sleep(0.02)
+# 
+# summarydf['State'] = states
     
 summarydf.to_json("Resources/CleanedData.json")
 
